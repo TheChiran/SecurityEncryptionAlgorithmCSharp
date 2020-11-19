@@ -16,9 +16,12 @@ namespace EncryptionGame
 			caeserCipher.setNumericValueForAlphabets();
 			//Console.WriteLine(caeserCipher.getNumericValueForSpecificAlphabet('G'));
 			//Console.WriteLine(caeserCipher.getAlphabeticValueForSpecificNumber(7));
-			caeserCipher.setPlainText("Method in which each letter in the plaintext is replaced");
+			//caeserCipher.setPlainText("EXPLAIN SECURITY ACCREDITATION PROCESS");
+			//caeserCipher.setEncryptionDecryptionKey(31);
+			//caeserCipher.encryptPlainText();
+			caeserCipher.setCipherText("JCUQFNS XJHZWNYD FHHWJINYFYNTS UWTHJXX");
 			caeserCipher.setEncryptionDecryptionKey(31);
-			caeserCipher.encryptPlainText();
+			caeserCipher.decryptCipherText();
 
 		}
 	}
