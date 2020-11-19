@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
+using EncryptionGame.Classes;
 
 namespace EncryptionGame.Classes
 {
@@ -9,44 +10,21 @@ namespace EncryptionGame.Classes
 	{
 		private string plainText;
 		private string cipherText;
-		private Hashtable numericValueHashTable = new Hashtable();
-		private Hashtable alphabeticValueHashTable = new Hashtable();
 		private List<int> whiteSpaceList = new List<int>();
-		private char alphabet;
-		private int alphabetIndex;
 		private int encryptionOrDecryptionKey;
+		private AlphabetValue alphabeticValueObject = new AlphabetValue(1);
+		private List<int> alphabeticValueList = new List<int>();
+		private List<int> keyAddedAlphabeticValueList = new List<int>();
+		private double dividedValue;
+		private int newValue;
 
-		public void setAlphabeticValueForNumerics()
+		public CaesarCipher()
 		{
-			
-			this.alphabetIndex = 1;
-			for (this.alphabet = 'A'; this.alphabet <= 'Z'; this.alphabet++)
-			{
-				this.alphabeticValueHashTable.Add(this.alphabetIndex, this.alphabet);
-				this.alphabetIndex++;
-			}
+			this.alphabeticValueObject.setAlphabeticValueForNumerics();
+			this.alphabeticValueObject.setNumericValueForAlphabets();
 		}
 
-		public void setNumericValueForAlphabets()
-		{
-			
-			this.alphabetIndex = 1;
-			for (this.alphabet = 'A'; this.alphabet <= 'Z'; this.alphabet++)
-			{
-				this.numericValueHashTable.Add(this.alphabet, this.alphabetIndex);
-				this.alphabetIndex++;
-			}
-		}
-
-		public void setEncryptionDecryptionKey(int key)
-		{
-			this.encryptionOrDecryptionKey = key;
-		}
-
-		public int getEncryptionDecryptionKey()
-		{
-			return this.encryptionOrDecryptionKey;
-		}
+		
 
 		//public void displayAlphabeticValuesOfnumerics()
 		//{
@@ -69,27 +47,39 @@ namespace EncryptionGame.Classes
 		//	}
 		//	Console.ReadKey();
 		//}
-
-		public int getNumericValueForSpecificAlphabet(char alphabet)
+		
+		public void setPlainText(string text)
 		{
-			int result = Convert.ToInt32(this.numericValueHashTable[alphabet]);
-			return result;
+
+			this.plainText = text;
 		}
 
-		public char getAlphabeticValueForSpecificNumber(int numericValue)
+		public string getPlainText()
 		{
-			if(numericValue == 0)
-			{
-				return 'Z';
-			}
-			else
-			{
-				char alphabeticValue = Convert.ToChar(this.alphabeticValueHashTable[numericValue]);
-				return alphabeticValue;
-			}
+			return this.plainText;
 		}
 
-		public void extractWhiteSpaceIndex(string text)
+		public void setCipherText(string text)
+		{
+			this.cipherText = text;
+		}
+
+		public string getCipherText()
+		{
+			return this.cipherText;
+		}
+
+		public void setEncryptionDecryptionKey(int key)
+		{
+			this.encryptionOrDecryptionKey = key;
+		}
+
+		public int getEncryptionDecryptionKey()
+		{
+			return this.encryptionOrDecryptionKey;
+		}
+
+		public void extractWhiteSpaceIndexFromText(string text)
 		{
 			Boolean result;
 			for (int i = 0; i < text.Length; i++)
@@ -102,135 +92,149 @@ namespace EncryptionGame.Classes
 
 		}
 
-		public void setPlainText(string text)
-		{
-			text = text.ToUpper();
-			this.extractWhiteSpaceIndex(text);
-			this.plainText = text.Replace(" ",string.Empty);
-		}
-
-		public string getPlainText()
-		{
-			return this.plainText;
-		}
-
-		public void setCipherText(string text)
-		{
-			text = text.ToUpper();
-			this.extractWhiteSpaceIndex(text);
-			this.cipherText = text.Replace(" ", string.Empty);
-		}
-
-		public string getCipherText()
-		{
-			return this.cipherText;
-		}
-
 		public void encryptPlainText()
 		{
 			//Console.WriteLine(this.getPlainText());
-			List<int> alphabeticValueList = new List<int>();
-			this.cipherText = "";
-			for(int i = 0; i < this.getPlainText().Length; i++)
-			{
-				//Console.WriteLine(getNumericValueForSpecificAlphabet(this.plainText[i]));
-				alphabeticValueList.Add(this.getNumericValueForSpecificAlphabet(this.plainText[i]));
-			}
-			List<int> keyAddedAlphabeticValueList = new List<int>();
-			double dividedValue;
-			int newValue;
-			foreach(var number in alphabeticValueList)
-			{
-				newValue = number + this.getEncryptionDecryptionKey();
-				if (newValue > 26)
-				{
-					dividedValue = newValue / 26.0;
-					//Console.WriteLine("Divided Value: " + dividedValue);
-					dividedValue = (dividedValue - Math.Floor(dividedValue)) * 26;
-					//Console.WriteLine("new Value: " + dividedValue);
-					if (dividedValue > 0.5)
-					{
-						newValue = (int)(Math.Round(dividedValue));
-						//Console.WriteLine("new Value: " + newValue);
-					}
-					else
-					{
-						newValue = (int)(Math.Floor(dividedValue));
-						//Console.WriteLine("new Value: " + newValue);
-					}
-					keyAddedAlphabeticValueList.Add(newValue);
 
-				}
-				else
-				{
-					keyAddedAlphabeticValueList.Add(newValue);
-				}
-				
-			}
-			
+			//this.cipherText = null;
+			this.setPlainText(this.convertTextIntoUpperCase(this.getPlainText()));
+			this.extractWhiteSpaceIndexFromText(this.getPlainText());
+			this.setPlainText(this.extractWhiteSpacesFromText(this.getPlainText()));
+			this.addPlainOrCipherTextAlphabetValues(this.getPlainText());
+			this.calculatePlainTextAlphabetValuesAfterAddingKeyValue();
+			this.setCipherText(this.createPlainOrCipherText());
+			this.setCipherText(this.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getCipherText()));
+			this.clearAllUsedListInEncryptionOrDecryption();
 			//ArrayList encryptedText = new ArrayList();
-			foreach (var newNumber in keyAddedAlphabeticValueList)
-			{
-				//encryptedText.Add();
-				this.cipherText+=this.getAlphabeticValueForSpecificNumber(newNumber);
-			}
+
 			//Console.WriteLine(encryptedText);
-			
-			foreach(int index in this.whiteSpaceList)
-			{
-				this.cipherText = this.cipherText.Insert(index, " ");
-			}
-			Console.WriteLine(this.getCipherText());
+
+
+			//Console.WriteLine(this.getCipherText());
 
 		}
 
 		public void decryptCipherText()
 		{
+			//this.plainText = null;
+			this.setCipherText(this.convertTextIntoUpperCase(this.getCipherText()));
+			this.extractWhiteSpaceIndexFromText(this.getCipherText());
+			this.setCipherText(this.extractWhiteSpacesFromText(this.getCipherText()));
+			this.addPlainOrCipherTextAlphabetValues(this.getCipherText());
+			this.calculateCipherTextAlphabetValuesAfterAddingKeyValue();
+			this.setPlainText(this.createPlainOrCipherText());
+			this.setPlainText(this.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getPlainText()));
+			this.clearAllUsedListInEncryptionOrDecryption();
+
+			//ArrayList encryptedText = new ArrayList();
+
+			//Console.WriteLine(encryptedText);
+
+
 			//Console.WriteLine(this.getPlainText());
-			this.plainText = "";
-			List<int> alphabeticValueList = new List<int>();
-			for (int i = 0; i < this.getCipherText().Length; i++)
+
+		}
+
+		public string convertTextIntoUpperCase(string cipherOrPLainText)
+		{
+			cipherOrPLainText = cipherOrPLainText.ToUpper();
+			return cipherOrPLainText;
+		}
+
+		public string extractWhiteSpacesFromText(string cipherOrPlainText)
+		{
+			cipherOrPlainText = cipherOrPlainText.Replace(" ", string.Empty);
+			return cipherOrPlainText;
+
+		}
+
+		public void addPlainOrCipherTextAlphabetValues(string plainOrCipherText)
+		{
+			for (int i = 0; i < plainOrCipherText.Length; i++)
 			{
-				//Console.WriteLine(getNumericValueForSpecificAlphabet(this.plainText[i]));
-				alphabeticValueList.Add(this.getNumericValueForSpecificAlphabet(this.cipherText[i]));
+				this.alphabeticValueList.Add(this.alphabeticValueObject.getNumericValueForSpecificAlphabet(plainOrCipherText[i]));
 			}
-			List<int> keyAddedAlphabeticValueList = new List<int>();
-			
-			int newValue;
-			foreach (var number in alphabeticValueList)
+		}
+
+		public void calculatePlainTextAlphabetValuesAfterAddingKeyValue()
+		{
+			foreach (var number in this.alphabeticValueList)
 			{
-				newValue = number - this.getEncryptionDecryptionKey();
-				//Console.WriteLine($"New Value {newValue}");
-				if (newValue < 0)
+				this.newValue = number + this.getEncryptionDecryptionKey();
+				if (this.newValue > 26)
 				{
-					do
+					this.dividedValue = this.newValue / 26.0;
+					//Console.WriteLine("Divided Value: " + dividedValue);
+					this.dividedValue = (this.dividedValue - Math.Floor(this.dividedValue)) * 26;
+					//Console.WriteLine("new Value: " + dividedValue);
+					if (this.dividedValue > 0.5)
 					{
-						newValue += 26;
-					} while (newValue<0);
-					keyAddedAlphabeticValueList.Add(newValue);
+						this.newValue = (int)(Math.Round(this.dividedValue));
+						//Console.WriteLine("new Value: " + newValue);
+					}
+					else
+					{
+						this.newValue = (int)(Math.Floor(this.dividedValue));
+						//Console.WriteLine("new Value: " + newValue);
+					}
+					this.keyAddedAlphabeticValueList.Add(this.newValue);
 
 				}
 				else
 				{
-					keyAddedAlphabeticValueList.Add(newValue);
+					this.keyAddedAlphabeticValueList.Add(this.newValue);
 				}
 
 			}
+		}
+		public void calculateCipherTextAlphabetValuesAfterAddingKeyValue()
+		{
+			foreach (var number in this.alphabeticValueList)
+			{
+				this.newValue = number - this.getEncryptionDecryptionKey();
+				//Console.WriteLine($"New Value {newValue}");
+				if (this.newValue < 0)
+				{
+					do
+					{
+						this.newValue += 26;
+					} while (this.newValue < 0);
+					this.keyAddedAlphabeticValueList.Add(this.newValue);
 
-			//ArrayList encryptedText = new ArrayList();
-			foreach (var newNumber in keyAddedAlphabeticValueList)
+				}
+				else
+				{
+					this.keyAddedAlphabeticValueList.Add(this.newValue);
+				}
+
+			}
+		}
+
+		public string createPlainOrCipherText()
+		{
+			string createdText = "";
+			foreach (var newNumber in this.keyAddedAlphabeticValueList)
 			{
 				//encryptedText.Add();
-				this.plainText += this.getAlphabeticValueForSpecificNumber(newNumber);
+				createdText += this.alphabeticValueObject.getAlphabeticValueForSpecificNumber(newNumber);
 			}
-			//Console.WriteLine(encryptedText);
+			return createdText;
+		}
 
+		public string addWhiteSpacesAfterEncryptingOrDecryptingText(string text)
+		{
 			foreach (int index in this.whiteSpaceList)
 			{
-				this.plainText = this.plainText.Insert(index, " ");
+				text = text.Insert(index, " ");
 			}
-			Console.WriteLine(this.getPlainText());
+			return text;
+		}
 
+		public void clearAllUsedListInEncryptionOrDecryption()
+		{
+			this.alphabeticValueList.Clear();
+			this.keyAddedAlphabeticValueList.Clear();
+			this.whiteSpaceList.Clear();
 		}
 	}
 }

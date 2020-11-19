@@ -8,20 +8,13 @@ namespace EncryptionGame
 		static void Main(string[] args)
 		{
 			CaesarCipher caeserCipher = new CaesarCipher();
-			//caeserCipher.setNumericValuesToAlphabets();
-			//caeserCipher.displayAlphabeticValuesOfnumerics();
-			//caeserCipher.getSpecificAlphabetValue('A');
-			caeserCipher.setAlphabeticValueForNumerics();
-			//caeserCipher.displayNumericValuesOfAlphabets();
-			caeserCipher.setNumericValueForAlphabets();
-			//Console.WriteLine(caeserCipher.getNumericValueForSpecificAlphabet('G'));
-			//Console.WriteLine(caeserCipher.getAlphabeticValueForSpecificNumber(7));
-			//caeserCipher.setPlainText("EXPLAIN SECURITY ACCREDITATION PROCESS");
-			//caeserCipher.setEncryptionDecryptionKey(31);
-			//caeserCipher.encryptPlainText();
-			caeserCipher.setCipherText("JCUQFNS XJHZWNYD FHHWJINYFYNTS UWTHJXX");
+			caeserCipher.setCipherText("QNXY ITBS YMJ FHYNANYNJX TK UWNRFWD WNXP FXXJXXRJSY");
 			caeserCipher.setEncryptionDecryptionKey(31);
 			caeserCipher.decryptCipherText();
+			Console.WriteLine($"Decrypted Text: {caeserCipher.getPlainText()}");
+			caeserCipher.setPlainText("LIST DOWN THE ACTIVITIES OF PRIMARY RISK ASSESSMENT");
+			caeserCipher.encryptPlainText();
+			Console.WriteLine($"Encrypted Text: {caeserCipher.getCipherText()}");
 
 		}
 	}
