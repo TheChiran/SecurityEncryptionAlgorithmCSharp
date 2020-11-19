@@ -1,0 +1,13 @@
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.exe
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.deps.json
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.runtimeconfig.json
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.runtimeconfig.dev.json
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.dll
+G:\Tutorial\ASP Dot Net\EncryptionGame\bin\Debug\netcoreapp3.1\EncryptionGame.pdb
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.csprojAssemblyReference.cache
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.AssemblyInfoInputs.cache
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.AssemblyInfo.cs
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.csproj.CoreCompileInputs.cache
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.dll
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.pdb
+G:\Tutorial\ASP Dot Net\EncryptionGame\obj\Debug\netcoreapp3.1\EncryptionGame.genruntimeconfig.cache
