@@ -12,6 +12,10 @@ namespace EncryptionGame.Classes
 		private char alphabet;
 		private int alphabetIndex;
 		private int startingIndex;
+		public AlphabetValue()
+		{
+			this.startingIndex = 1;
+		}
 		public AlphabetValue(int startingIndex)
 		{
 			this.startingIndex = startingIndex;

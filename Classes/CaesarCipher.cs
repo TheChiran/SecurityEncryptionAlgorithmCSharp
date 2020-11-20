@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
-using EncryptionGame.Classes;
+using EncryptionGame.Classes.Common;
 
 namespace EncryptionGame.Classes
 {
@@ -10,16 +10,18 @@ namespace EncryptionGame.Classes
 	{
 		private string plainText;
 		private string cipherText;
-		private List<int> whiteSpaceList = new List<int>();
 		private int encryptionOrDecryptionKey;
-		private AlphabetValue alphabeticValueObject = new AlphabetValue(1);
+		private AlphabetValue alphabeticValueObject;
+		private StringWhiteSpace stringWhiteSpace;
 		private List<int> alphabeticValueList = new List<int>();
 		private List<int> keyAddedAlphabeticValueList = new List<int>();
 		private double dividedValue;
 		private int newValue;
 
-		public CaesarCipher()
+		public CaesarCipher(AlphabetValue alphabetValueObject,StringWhiteSpace stringWhiteSpaceObject)
 		{
+			this.stringWhiteSpace = stringWhiteSpaceObject;
+			this.alphabeticValueObject = alphabetValueObject;
 			this.alphabeticValueObject.setAlphabeticValueForNumerics();
 			this.alphabeticValueObject.setNumericValueForAlphabets();
 		}
@@ -79,31 +81,20 @@ namespace EncryptionGame.Classes
 			return this.encryptionOrDecryptionKey;
 		}
 
-		public void extractWhiteSpaceIndexFromText(string text)
-		{
-			Boolean result;
-			for (int i = 0; i < text.Length; i++)
-			{
-				result = Char.IsWhiteSpace(text[i]);
-				if (result)
-					this.whiteSpaceList.Add(i);
-
-			}
-
-		}
+		
 
 		public void encryptPlainText()
 		{
 			//Console.WriteLine(this.getPlainText());
 
 			//this.cipherText = null;
-			this.setPlainText(this.convertTextIntoUpperCase(this.getPlainText()));
-			this.extractWhiteSpaceIndexFromText(this.getPlainText());
-			this.setPlainText(this.extractWhiteSpacesFromText(this.getPlainText()));
+			this.setPlainText(this.getPlainText().ToUpper());
+			this.stringWhiteSpace.extractWhiteSpaceIndexFromText(this.getPlainText());
+			this.setPlainText(this.stringWhiteSpace.extractWhiteSpacesFromText(this.getPlainText()));
 			this.addPlainOrCipherTextAlphabetValues(this.getPlainText());
 			this.calculatePlainTextAlphabetValuesAfterAddingKeyValue();
 			this.setCipherText(this.createPlainOrCipherText());
-			this.setCipherText(this.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getCipherText()));
+			this.setCipherText(this.stringWhiteSpace.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getCipherText()));
 			this.clearAllUsedListInEncryptionOrDecryption();
 			//ArrayList encryptedText = new ArrayList();
 
@@ -117,13 +108,13 @@ namespace EncryptionGame.Classes
 		public void decryptCipherText()
 		{
 			//this.plainText = null;
-			this.setCipherText(this.convertTextIntoUpperCase(this.getCipherText()));
-			this.extractWhiteSpaceIndexFromText(this.getCipherText());
-			this.setCipherText(this.extractWhiteSpacesFromText(this.getCipherText()));
+			this.setCipherText(this.getCipherText().ToUpper());
+			this.stringWhiteSpace.extractWhiteSpaceIndexFromText(this.getCipherText());
+			this.setCipherText(this.stringWhiteSpace.extractWhiteSpacesFromText(this.getCipherText()));
 			this.addPlainOrCipherTextAlphabetValues(this.getCipherText());
 			this.calculateCipherTextAlphabetValuesAfterAddingKeyValue();
 			this.setPlainText(this.createPlainOrCipherText());
-			this.setPlainText(this.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getPlainText()));
+			this.setPlainText(this.stringWhiteSpace.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getPlainText()));
 			this.clearAllUsedListInEncryptionOrDecryption();
 
 			//ArrayList encryptedText = new ArrayList();
@@ -135,18 +126,13 @@ namespace EncryptionGame.Classes
 
 		}
 
-		public string convertTextIntoUpperCase(string cipherOrPLainText)
-		{
-			cipherOrPLainText = cipherOrPLainText.ToUpper();
-			return cipherOrPLainText;
-		}
+		//public string convertTextIntoUpperCase(string cipherOrPLainText)
+		//{
+		//	cipherOrPLainText = cipherOrPLainText.ToUpper();
+		//	return cipherOrPLainText;
+		//}
 
-		public string extractWhiteSpacesFromText(string cipherOrPlainText)
-		{
-			cipherOrPlainText = cipherOrPlainText.Replace(" ", string.Empty);
-			return cipherOrPlainText;
-
-		}
+		
 
 		public void addPlainOrCipherTextAlphabetValues(string plainOrCipherText)
 		{
@@ -221,20 +207,13 @@ namespace EncryptionGame.Classes
 			return createdText;
 		}
 
-		public string addWhiteSpacesAfterEncryptingOrDecryptingText(string text)
-		{
-			foreach (int index in this.whiteSpaceList)
-			{
-				text = text.Insert(index, " ");
-			}
-			return text;
-		}
+		
 
 		public void clearAllUsedListInEncryptionOrDecryption()
 		{
 			this.alphabeticValueList.Clear();
 			this.keyAddedAlphabeticValueList.Clear();
-			this.whiteSpaceList.Clear();
+			this.stringWhiteSpace.clearWhiteSpaceList();
 		}
 	}
 }
