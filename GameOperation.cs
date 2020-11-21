@@ -1,5 +1,6 @@
 ﻿using System;
 using EncryptionGame.Classes;
+using EncryptionGame.Classes.Common;
 
 namespace EncryptionGame
 {
@@ -7,18 +8,14 @@ namespace EncryptionGame
 	{
 		static void Main(string[] args)
 		{
-			CaesarCipher caeserCipher = new CaesarCipher();
-			//caeserCipher.setNumericValuesToAlphabets();
-			//caeserCipher.displayAlphabeticValuesOfnumerics();
-			//caeserCipher.getSpecificAlphabetValue('A');
-			caeserCipher.setAlphabeticValueForNumerics();
-			//caeserCipher.displayNumericValuesOfAlphabets();
-			caeserCipher.setNumericValueForAlphabets();
-			//Console.WriteLine(caeserCipher.getNumericValueForSpecificAlphabet('G'));
-			//Console.WriteLine(caeserCipher.getAlphabeticValueForSpecificNumber(7));
-			caeserCipher.setPlainText("Method in which each letter in the plaintext is replaced");
-			caeserCipher.setEncryptionDecryptionKey(31);
+			CaesarCipher caeserCipher = new CaesarCipher(new AlphabetValue(),new StringWhiteSpace());
+			caeserCipher.setCipherText("DSSOH");
+			caeserCipher.setEncryptionDecryptionKey(3);
+			caeserCipher.decryptCipherText();
+			Console.WriteLine($"Decrypted Text: {caeserCipher.getPlainText()}");
+			caeserCipher.setPlainText("Apple");
 			caeserCipher.encryptPlainText();
+			Console.WriteLine($"Encrypted Text: {caeserCipher.getCipherText()}");
 
 		}
 	}
