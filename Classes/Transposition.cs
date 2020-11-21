@@ -15,6 +15,8 @@ namespace EncryptionGame.Classes
 		private float totalLengthOfPlainText;
 		private List<KeyValuePair<char,char>> plainOrCipherTextkeyValueList = new List<KeyValuePair<char,char>>();
 		private ArrayList newKeyStringList = new ArrayList();
+
+
 		public Transposition(StringWhiteSpace stringWhiteSpaceObj)
 		{
 			this.stringWhiteSpaceObject = stringWhiteSpaceObj;
@@ -40,9 +42,9 @@ namespace EncryptionGame.Classes
 			return this.cipherText;
 		}
 
-		public void setEncryptionDecryptionKey(string keyString)
+		public void setEncryptionDecryptionKey(int keyString)
 		{
-			this.keyStirng = keyString;
+			this.keyStirng = Convert.ToString(keyString);
 		}
 
 		public string getEncryptionDecryptionKey()
@@ -52,29 +54,24 @@ namespace EncryptionGame.Classes
 
 		public void encryptPlainText()
 		{
+			this.setPlainText(this.getPlainText().ToUpper());
 			this.stringWhiteSpaceObject.extractWhiteSpaceIndexFromText(this.getPlainText());
 			this.setPlainText(this.stringWhiteSpaceObject.extractWhiteSpacesFromText(this.getPlainText()));
 			this.setPlainText(this.checkIfThereIsAnySpaceLeftToBeFilled(this.getPlainText()));
 			this.insertPlainOrCipherTextWithValues(this.getPlainText());
-			//this.displayKeyValuePair();
 			this.sortKeyString();
+			this.setCipherText(this.generatePlainOrCipherText(this.getCipherText()));
+			this.setCipherText(this.stringWhiteSpaceObject.addWhiteSpacesAfterEncryptingOrDecryptingText(this.getCipherText()));
 		}
 
 		public string checkIfThereIsAnySpaceLeftToBeFilled(string plainOrCipherText)
 		{
 			float encryptionDecryptionKeyLength = this.getEncryptionDecryptionKey().Length;
-			//Console.WriteLine($"Encryption length: {encryptionDecryptionKeyLength}");
-			//Console.WriteLine($"Plain Text length: {plainOrCipherText.Length}");
-			//this.totalLengthOfPlainText = (int)Math.Round(plainOrCipherText.Length / ((float)encryptionDecryptionKeyLength));
 			this.totalLengthOfPlainText = (float)Math.Ceiling(plainOrCipherText.Length / encryptionDecryptionKeyLength);
-			//this.totalLengthOfPlainText = (float)Math.Round(this.totalLengthOfPlainText);
-
-			//Console.WriteLine(this.totalLengthOfPlainText);
 			this.totalLengthOfPlainText = this.totalLengthOfPlainText * encryptionDecryptionKeyLength;
-			//Console.WriteLine(this.totalLengthOfPlainText);
+			
 			if (this.totalLengthOfPlainText != plainOrCipherText.Length)
 			{
-				//Console.WriteLine("Must fill blank with Z");
 				return this.fillPlainTextblankSpaceWithZ(plainOrCipherText,this.totalLengthOfPlainText);
 			}
 			else
@@ -92,6 +89,7 @@ namespace EncryptionGame.Classes
 			}
 			return plainOrCipherText;
 		}
+
 		public void insertPlainOrCipherTextWithValues(string plainOrCipherText)
 		{
 			int keyStringIndex = 0;
@@ -100,26 +98,16 @@ namespace EncryptionGame.Classes
 				if(keyStringIndex > this.getEncryptionDecryptionKey().Length - 1)
 				{
 					keyStringIndex = 0;
-					//Console.WriteLine(this.keyStirng[keyStringIndex]);
 					this.plainOrCipherTextkeyValueList.Add(new KeyValuePair<char, char>(plainOrCipherText[i], this.keyStirng[keyStringIndex]));
 				}
 				else
 				{
-					//Console.WriteLine(this.keyStirng[keyStringIndex]);
 					this.plainOrCipherTextkeyValueList.Add(new KeyValuePair<char, char>(plainOrCipherText[i], this.keyStirng[keyStringIndex]));
 				}
 				keyStringIndex++;
 			}
 		}
 
-		public void displayKeyValuePair()
-		{
-			//ICollection key = this.plainOrCipherTextkeyValueList.Keys;
-			foreach (var value in this.plainOrCipherTextkeyValueList)
-			{
-				Console.WriteLine(value.Key + ": " + value.Value);
-			}
-		}
 		public void sortKeyString()
 		{
 			
@@ -128,10 +116,22 @@ namespace EncryptionGame.Classes
 				this.newKeyStringList.Add(this.keyStirng[i]);
 			}
 			this.newKeyStringList.Sort();
+		}
+
+		public string generatePlainOrCipherText(string finalText)
+		{
+			finalText = "";
 			foreach(var number in this.newKeyStringList)
 			{
-				Console.WriteLine(number);
+				foreach(var text in this.plainOrCipherTextkeyValueList)
+				{
+					if(Convert.ToChar(number) == text.Value)
+					{
+						finalText += text.Key;
+					}
+				}
 			}
+			return finalText;
 		}
 
 

@@ -35,9 +35,9 @@ namespace EncryptionGame
 			//level 3-Transposition
 			Transposition transposition = new Transposition(stringWhiteSpaceObject);
 			transposition.setPlainText("THIS IS A WHITE BOARD");
-			transposition.setEncryptionDecryptionKey("972356");
+			transposition.setEncryptionDecryptionKey(972356);
 			transposition.encryptPlainText();
-			//Console.WriteLine($"New Plain Text: {transposition.getPlainText()}");
+			Console.WriteLine($"New Plain Text: {transposition.getCipherText()}");
 
 		}
 	}
