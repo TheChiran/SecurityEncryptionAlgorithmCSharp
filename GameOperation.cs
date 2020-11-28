@@ -33,16 +33,26 @@ namespace EncryptionGame
 			//Console.WriteLine($"Decrypted : {oneTimePod.getPlainText()}");
 
 			//level 3-Transposition
-			Transposition transposition = new Transposition(stringWhiteSpaceObject);
+			//Transposition transposition = new Transposition(stringWhiteSpaceObject);
 			//transposition.setPlainText("THIS IS A WHITE BOARD");
 			//transposition.setEncryptionDecryptionKey(972356);
 			//transposition.encryptPlainText();
 			//Console.WriteLine($"New Plain Text: {transposition.getCipherText()}");
-			transposition.setCipherText("WSLSWIRIEGWASSRNSSOOFRNPEBNHDLHPEUASINOIDO");
-			transposition.setEncryptionDecryptionKey(1749326);
-			transposition.decryptCipherText();
-			Console.WriteLine($"New Plain Text: {transposition.getPlainText()}");
+			//transposition.setCipherText("WSLSWIRIEGWASSRNSSOOFRNPEBNHDLHPEUASINOIDO");
+			//transposition.setEncryptionDecryptionKey(1749326);
+			//transposition.decryptCipherText();
+			//Console.WriteLine($"New Plain Text: {transposition.getPlainText()}");
 
+			//level 4 -hill cliper
+			alphabeticValueObject = new AlphabetValue(0);
+			HillCliper hillCliper = new HillCliper(alphabeticValueObject, stringWhiteSpaceObject);
+			hillCliper.setKeyMatrix(3, 3, 3, 4);
+			//hillCliper.setPlainText("ORANGE");
+			//hillCliper.encryptionOperation();
+			//Console.WriteLine($"Encrypted Text: {hillCliper.getCipherText()}");
+			hillCliper.setCipherText("DQRKIUFUJM");
+			hillCliper.decryptionOperation();
+			Console.WriteLine($"Decrypted Text: {hillCliper.getPlainText()}");
 		}
 	}
 }

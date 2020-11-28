@@ -51,15 +51,25 @@ namespace EncryptionGame.Classes
 
 		public char getAlphabeticValueForSpecificNumber(int numericValue)
 		{
+
+			char alphabeticValue;
 			if (numericValue == 0)
 			{
-				return 'Z';
+				bool alphabeticValueContains = this.alphabeticValueHashTable.Contains(numericValue);
+				if (alphabeticValueContains)
+				{
+					alphabeticValue = Convert.ToChar(this.alphabeticValueHashTable[numericValue]);
+				}
+				else
+				{
+					alphabeticValue = 'Z';
+				}
 			}
 			else
 			{
-				char alphabeticValue = Convert.ToChar(this.alphabeticValueHashTable[numericValue]);
-				return alphabeticValue;
+				alphabeticValue = Convert.ToChar(this.alphabeticValueHashTable[numericValue]);
 			}
+			return alphabeticValue;
 		}
 	}
 }
